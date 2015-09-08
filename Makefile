@@ -1,16 +1,20 @@
 all: marmite marmite-app
 .PHONY : all
 
+CC := clang -std=c11
 CFLAGS := $(shell pkg-config --cflags vte-2.90 gtk+-3.0 glib-2.0 )
-LDFLAGS := $(shell pkg-config --libs vte-2.90 gtk+-3.0 glib-2.0 )
+LDLIBS := $(shell pkg-config --libs vte-2.90 gtk+-3.0 glib-2.0 )
 
-marmite: marmite.c
-	$(CC) $< $(CFLAGS) $(LDFLAGS) -o $@
+palette.h: make-palette
+	./make-palette > palette.h
+
+look.o: look.c palette.h
+
+marmite: marmite.c look.o
 
 marmite-app: marmite-app.c
-	$(CC) $< $(CFLAGS) $(LDFLAGS) -o $@
 
 clean:
-	rm marmite marmite-app
+	rm marmite marmite-app make-palette
 
 .PHONY : clean
