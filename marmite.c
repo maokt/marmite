@@ -20,7 +20,6 @@ int main(int argc, char *argv[]) {
 
     window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
     gtk_window_set_title(window, "Marmite");
-    gtk_window_set_has_resize_grip(window, FALSE);
     g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     vte = VTE_TERMINAL(vte_terminal_new());
