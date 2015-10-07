@@ -50,16 +50,16 @@ static void marmite_app_window_init(MarmiteAppWindow *window) {
     VteTerminal *vte;
     char *cmd[] = { "bash", NULL };
     vte = VTE_TERMINAL(vte_terminal_new());
-	vte_terminal_set_scrollback_lines(vte, 200);
-	vte_terminal_set_mouse_autohide(vte, TRUE);
+    vte_terminal_set_scrollback_lines(vte, 200);
+    vte_terminal_set_mouse_autohide(vte, TRUE);
     vte_terminal_fork_command_full(vte, VTE_PTY_DEFAULT,
             NULL,
             cmd, NULL,
             G_SPAWN_SEARCH_PATH, NULL, NULL,
             NULL, NULL);
-	g_signal_connect(G_OBJECT(vte), "child-exited", G_CALLBACK(got_child_exited), window);
-	g_signal_connect(G_OBJECT(vte), "window-title-changed", G_CALLBACK(got_title_changed), window);
-	gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(vte));
+    g_signal_connect(G_OBJECT(vte), "child-exited", G_CALLBACK(got_child_exited), window);
+    g_signal_connect(G_OBJECT(vte), "window-title-changed", G_CALLBACK(got_title_changed), window);
+    gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(vte));
     gtk_widget_show(GTK_WIDGET(vte));
 }
 
@@ -84,7 +84,7 @@ static void marmite_app_activate(GApplication *app) {
 }
 
 static void marmite_app_class_init(MarmiteAppClass *class) {
-  G_APPLICATION_CLASS (class)->activate = marmite_app_activate;
+    G_APPLICATION_CLASS (class)->activate = marmite_app_activate;
 }
 
 MarmiteApp * marmite_app_new(void) {

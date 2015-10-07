@@ -1,6 +1,9 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <vte/vte.h>
+#include <locale.h>
+#include "args.h"
+#include "look.h"
 
 static void got_child_exited(VteTerminal *vte, GtkWindow *win) {
     gtk_window_close(win);
@@ -10,13 +13,14 @@ static void got_title_changed(VteTerminal *vte, GtkWindow *win) {
     gtk_window_set_title(win, vte_terminal_get_window_title(vte));
 }
 
-void marmite_look(VteTerminal *vte);
-
 int main(int argc, char *argv[]) {
     GtkWindow *window;
     VteTerminal *vte;
     char *cmd[] = { "bash", NULL };
-    gtk_init(&argc, &argv);
+
+	setlocale(LC_ALL, "");
+
+    marmite_args(argc, argv, gtk_get_option_group(TRUE));
 
     window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
     gtk_window_set_title(window, "Marmite");
