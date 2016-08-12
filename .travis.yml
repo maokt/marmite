@@ -1,0 +1,8 @@
+language: c
+script: make test
+addons:
+    apt:
+        packages:
+            - libvte-2.90-dev
+dist: trusty
+sudo: required
