@@ -14,7 +14,7 @@ marmite: marmite.c args.o look.o
 
 marmite-app: marmite-app.c
 
-test: t
+test:
 	$(MAKE) -C t
 	prove -v
 
