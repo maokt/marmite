@@ -12,8 +12,6 @@ look.o: look.c palette.h
 
 marmite: marmite.c args.o look.o
 
-marmite-app: marmite-app.c
-
 .PHONY : clean
 clean:
 	rm marmite marmite-app make-palette
