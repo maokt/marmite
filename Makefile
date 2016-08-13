@@ -12,6 +12,10 @@ look.o: look.c palette.h
 
 marmite: marmite.c args.o look.o
 
+.PHONY : test
+test: unittests
+	./unittests
+
 .PHONY : clean
 clean:
 	rm marmite marmite-app make-palette
