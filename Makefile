@@ -14,11 +14,6 @@ marmite: marmite.c args.o look.o
 
 marmite-app: marmite-app.c
 
-test:
-	$(MAKE) -C t
-	prove -v
-
 .PHONY : clean
 clean:
-	$(MAKE) -C t clean
 	rm marmite marmite-app make-palette
