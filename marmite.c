@@ -5,7 +5,11 @@
 #include "args.h"
 #include "look.h"
 
+#if VTE_CHECK_VERSION(0,37,0)
+static void got_child_exited(VteTerminal *vte, gint status, GtkWindow *win) {
+#else
 static void got_child_exited(VteTerminal *vte, GtkWindow *win) {
+#endif
     gtk_window_close(win);
 }
 
@@ -31,11 +35,15 @@ int main(int argc, char *argv[]) {
     vte_terminal_set_mouse_autohide(vte, TRUE);
     marmite_look(vte);
 
-    vte_terminal_fork_command_full(vte, VTE_PTY_DEFAULT,
-            NULL,
-            cmd, NULL,
-            G_SPAWN_SEARCH_PATH, NULL, NULL,
-            NULL, NULL);
+#if VTE_CHECK_VERSION(0,37,0)
+    vte_terminal_spawn_sync(vte, VTE_PTY_DEFAULT, NULL,
+            cmd, NULL, G_SPAWN_SEARCH_PATH,
+            NULL, NULL, NULL, NULL, NULL);
+#else
+    vte_terminal_fork_command_full(vte, VTE_PTY_DEFAULT, NULL,
+            cmd, NULL, G_SPAWN_SEARCH_PATH,
+            NULL, NULL, NULL, NULL);
+#endif
 
     g_signal_connect(G_OBJECT(vte), "child-exited", G_CALLBACK(got_child_exited), window);
     g_signal_connect(G_OBJECT(vte), "window-title-changed", G_CALLBACK(got_title_changed), window);
