@@ -1,5 +1,5 @@
 .PHONY : all
-all: marmite marmite-app
+all: marmite
 
 CC := clang -std=c11
 CFLAGS := $(shell pkg-config --cflags vte-2.90 gtk+-3.0 glib-2.0 )
