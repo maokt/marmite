@@ -1,5 +1,5 @@
 language: c
-script: cmake . && make && make test
+script: CC=/usr/bin/c99 cmake . && make && make test
 addons:
     apt:
         packages:
