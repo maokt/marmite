@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
 project(marmite C)
 
+set_property(GLOBAL PROPERTY CMAKE_C_STANDARD 99)
+set_property(GLOBAL PROPERTY CMAKE_C_STANDARD_REQUIRED ON)
+
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GLIB2 REQUIRED glib-2.0)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
@@ -22,7 +25,15 @@ add_compile_options(
     ${VTE_CFLAGS_OTHER}
     )
 
+add_executable(make-palette make-palette.c)
+add_custom_command(OUTPUT palette.h
+    COMMAND make-palette > palette.h
+    )
+add_custom_target(palette DEPENDS palette.h)
+
 add_library(objects OBJECT args.c look.c)
+add_dependencies(objects palette)
+
 add_executable(marmite marmite.c $<TARGET_OBJECTS:objects>)
 add_executable(unittests unittests.c $<TARGET_OBJECTS:objects>)
 
