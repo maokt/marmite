@@ -1,47 +1,63 @@
+#define MAYBE_POSIX_C_SOURCE 200809L
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
 #include <glib.h>
-#include <locale.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "config.h"
 
-static const char *o_font = "default font";
-static gchar **o_args = NULL;
-static gboolean o_exec = FALSE;
-static gboolean o_version = FALSE;
-static gint o_number = 99;
+static MarmiteConfig cfg = {
+    .font = "VL Gothic 16"
+};
 
 static GOptionEntry entries[] = {
-	{ "version", 'v', 0, G_OPTION_ARG_NONE, &o_version, "Print version number", NULL },
-	{ "font", 'f', 0, G_OPTION_ARG_STRING, &o_font, "Select initial terminal font", NULL },
-	{ "number", 'n', 0, G_OPTION_ARG_INT, &o_number, "Select initial number of tabs", NULL },
-	{ G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, &o_args, NULL, NULL },
-	{ "execute", 'e', 0, G_OPTION_ARG_NONE, &o_exec, "Execute command (last option in the command line)", NULL },
+	{ "font", 'f', 0, G_OPTION_ARG_STRING, &cfg.font, "Select terminal font", "\"font name\"" },
+	{ G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, &cfg.command, "command to run", "[command]" },
 	{ NULL }
 };
 
-static gchar *cmd_shell[] = { "bash", NULL };
+static char **get_default_command() {
+    static char *command[2] = { NULL, NULL };
+    static char buffer[64];
 
-void marmite_args(int argc, char *argv[], GOptionGroup *extra_options) {
-    GOptionContext *context;
+    command[0] = getenv("SHELL");
 
-	setlocale(LC_ALL, "");
+    if (!command[0]) {
+        struct passwd *user = getpwuid(getuid());
+        if (user && user->pw_shell && strlen(user->pw_shell) < sizeof buffer) {
+            strcpy(buffer, user->pw_shell);
+            command[0] = buffer;
+        }
+    }
 
-    o_args = cmd_shell;
+    if (!command[0]) command[0] = "/bin/sh";
 
-	context = g_option_context_new("- mini terminal emulator");
+    return command;
+}
+
+MarmiteConfig *marmite_config(int argc, char *argv[], GOptionGroup *extra_options) {
+    GOptionContext *context = g_option_context_new("- Mini Terminal Emulator");
+    g_option_context_set_summary(context, "Version 0.1;");
 	g_option_context_add_main_entries(context, entries, NULL);
 	if (extra_options) g_option_context_add_group(context, extra_options);
-	// g_option_group_set_translation_domain(gtk_get_option_group(TRUE), GETTEXT_PACKAGE);
+
 #if GLIB_CHECK_VERSION(2,44,0)
     g_option_context_set_strict_posix(context, TRUE);
 #endif
-    for (char **p = argv; *p; ++p)
-        if ((*p)[0] == '-' && (*p)[1] == 'e')
-            (*p)[1] = '-';
-    g_option_context_parse(context, &argc, &argv, NULL);
 
-    printf("number=%d; version=%d; exec=%d;\n", o_number, o_version, o_exec);
-    printf("font=%s;\n", o_font);
-    printf("args=[");
-    for (gchar **p = o_args; *p; ++p)
-        printf("\"%s\",", *p);
-    printf("]\n");
+    // hack to handle the first -e for compatiblity with some other terminals
+    for (char **p = argv; *p; ++p) {
+        if (strcmp(*p, "-e") == 0) (*p)[1] = '-';
+        if (strcmp(*p, "--") == 0) break;
+    }
+
+    gboolean ok = g_option_context_parse(context, &argc, &argv, NULL);
+    g_option_context_free(context);
+    if (!ok) return NULL;
+
+    if (!cfg.command) cfg.command = get_default_command();
+
+    return &cfg;
 }
