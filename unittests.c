@@ -1,6 +1,6 @@
 #include <glib.h>
 #include <locale.h>
-#include "args.h"
+#include "config.h"
 
 static void dummy(void) {
   g_assert_cmpint(2, ==, 2);
