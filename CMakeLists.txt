@@ -26,16 +26,15 @@ add_compile_options(
     )
 
 add_executable(make-palette make-palette.c)
-add_custom_command(OUTPUT palette.h
-    COMMAND make-palette > palette.h
-    )
+add_custom_command(OUTPUT palette.h COMMAND make-palette > palette.h)
 add_custom_target(palette DEPENDS palette.h)
 
-add_library(objects OBJECT args.c look.c)
-add_dependencies(objects palette)
+add_library(look OBJECT look.c)
+add_dependencies(look palette)
+add_library(config OBJECT config.c)
 
-add_executable(marmite marmite.c $<TARGET_OBJECTS:objects>)
-add_executable(unittests unittests.c $<TARGET_OBJECTS:objects>)
+add_executable(marmite marmite.c $<TARGET_OBJECTS:config> $<TARGET_OBJECTS:look>)
+add_executable(unittests unittests.c $<TARGET_OBJECTS:config> $<TARGET_OBJECTS:look>)
 
 enable_testing()
 add_test(NAME simple COMMAND unittests)
