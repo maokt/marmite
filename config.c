@@ -47,12 +47,6 @@ MarmiteConfig *marmite_config(int argc, char *argv[], GOptionGroup *extra_option
     g_option_context_set_strict_posix(context, TRUE);
 #endif
 
-    // hack to handle the first -e for compatiblity with some other terminals
-    for (char **p = argv; *p; ++p) {
-        if (strcmp(*p, "-e") == 0) (*p)[1] = '-';
-        if (strcmp(*p, "--") == 0) break;
-    }
-
     gboolean ok = g_option_context_parse(context, &argc, &argv, NULL);
     g_option_context_free(context);
     if (!ok) return NULL;
