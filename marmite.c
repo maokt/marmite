@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
     if (!cfg) return 64;
 
     GtkWindow *window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
-    gtk_window_set_title(window, "Marmite"); // CONFIG: title
+    gtk_window_set_title(window, cfg->title);
     g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     MarmiteHooks hooks = {

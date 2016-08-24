@@ -26,7 +26,7 @@ GObject *marmite_vte(MarmiteConfig *cfg, MarmiteHooks *hooks) {
     vte_terminal_set_font(vte, font);
     pango_font_description_free(font);
 
-    vte_terminal_set_scrollback_lines(vte, 200); // CONFIG: scrollback
+    vte_terminal_set_scrollback_lines(vte, cfg->scrollback);
     vte_terminal_set_mouse_autohide(vte, TRUE);
 
     if (hooks) {
