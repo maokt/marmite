@@ -8,12 +8,12 @@
 #include <string.h>
 #include "config.h"
 
-static MarmiteConfig cfg = {
-    .font = "VL Gothic 16"
-};
+static MarmiteConfig cfg;
 
 static GOptionEntry entries[] = {
+	{ "title", 't', 0, G_OPTION_ARG_STRING, &cfg.title, "Set window title", "\"title\"" },
 	{ "font", 'f', 0, G_OPTION_ARG_STRING, &cfg.font, "Select terminal font", "\"font name\"" },
+	{ "scrollback", 's', 0, G_OPTION_ARG_INT, &cfg.scrollback, "Size of scrollback buffer", "\"lines\"" },
 	{ G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, &cfg.command, "command to run", "[command]" },
 	{ NULL }
 };
@@ -38,6 +38,12 @@ static char **get_default_command() {
 }
 
 MarmiteConfig *marmite_config(int argc, char *argv[], GOptionGroup *extra_options) {
+    // set defaults
+    cfg.title = "Marmite";
+    cfg.font = "VL Gothic 16";
+    cfg.command = NULL;
+    cfg.scrollback = 0;
+
     GOptionContext *context = g_option_context_new("- Mini Terminal Emulator");
     g_option_context_set_summary(context, "Version 0.1;");
 	g_option_context_add_main_entries(context, entries, NULL);
@@ -51,7 +57,10 @@ MarmiteConfig *marmite_config(int argc, char *argv[], GOptionGroup *extra_option
     g_option_context_free(context);
     if (!ok) return NULL;
 
-    if (!cfg.command) cfg.command = get_default_command();
+    if (!cfg.command) {
+        cfg.command = get_default_command();
+        if (!cfg.scrollback) cfg.scrollback = 200;
+    }
 
     return &cfg;
 }

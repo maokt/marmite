@@ -19,6 +19,15 @@ static void default_config(void) {
     g_assert_nonnull(cfg);
     g_assert_true(g_str_has_suffix(cfg->command[0], "sh"));
     g_assert_cmpstr(cfg->font, ==, "VL Gothic 16");
+    g_assert_cmpstr(cfg->title, ==, "Marmite");
+    g_assert_cmpint(cfg->scrollback, ==, 200);
+}
+
+static void opt_title(void) {
+    const char *title = "Hello World";
+    MarmiteConfig *cfg = run_opts(3, "marmite", "-t", title);
+    g_assert_nonnull(cfg);
+    g_assert_cmpstr(cfg->title, ==, title);
 }
 
 static void opt_font(void) {
@@ -26,6 +35,12 @@ static void opt_font(void) {
     MarmiteConfig *cfg = run_opts(3, "marmite", "-f", fontname);
     g_assert_nonnull(cfg);
     g_assert_cmpstr(cfg->font, ==, fontname);
+}
+
+static void opt_scrollback(void) {
+    MarmiteConfig *cfg = run_opts(3, "marmite", "-s", "123");
+    g_assert_nonnull(cfg);
+    g_assert_cmpint(cfg->scrollback, ==, 123);
 }
 
 static void opt_command(void) {
@@ -36,6 +51,8 @@ static void opt_command(void) {
     g_assert_cmpstr(cfg->command[1], ==, "-e");
     g_assert_cmpstr(cfg->command[2], ==, "bar");
     g_assert_null(cfg->command[3]);
+    // no scrollback by default if a command is given
+    g_assert_cmpint(cfg->scrollback, ==, 0);
 }
 
 int main (int argc, char *argv[]) {
@@ -44,6 +61,8 @@ int main (int argc, char *argv[]) {
     g_test_add_func("/marmite/config/default", default_config);
     g_test_add_func("/marmite/config/font", opt_font);
     g_test_add_func("/marmite/config/command", opt_command);
+    g_test_add_func("/marmite/config/title", opt_title);
+    g_test_add_func("/marmite/config/scrollback", opt_scrollback);
     return g_test_run ();
 }
 
