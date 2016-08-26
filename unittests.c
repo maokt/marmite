@@ -51,8 +51,9 @@ static void opt_light(void) {
 }
 
 static void opt_command(void) {
-    char *argv[] = { "marmite", "foo", "-e", "bar", NULL };
-    MarmiteConfig *cfg = marmite_config(4, argv, NULL);
+    // adding -- to cope with older glib versions that can't be posix-friendly
+    char *argv[] = { "marmite", "--", "foo", "-e", "bar" };
+    MarmiteConfig *cfg = marmite_config(5, argv, NULL);
     g_assert_nonnull(cfg);
     g_assert_cmpstr(cfg->command[0], ==, "foo");
     g_assert_cmpstr(cfg->command[1], ==, "-e");
