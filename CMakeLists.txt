@@ -25,16 +25,10 @@ add_compile_options(
     ${VTE_CFLAGS_OTHER}
     )
 
-add_executable(make-palette make-palette.c)
-add_custom_command(OUTPUT palette.h COMMAND make-palette > palette.h)
-add_custom_target(palette DEPENDS palette.h)
+add_library(objects OBJECT config.c term.c)
 
-add_library(term OBJECT term.c)
-add_dependencies(term palette)
-add_library(config OBJECT config.c)
-
-add_executable(marmite marmite.c $<TARGET_OBJECTS:config> $<TARGET_OBJECTS:term>)
-add_executable(unittests unittests.c $<TARGET_OBJECTS:config> $<TARGET_OBJECTS:term>)
+add_executable(marmite marmite.c $<TARGET_OBJECTS:objects>)
+add_executable(unittests unittests.c $<TARGET_OBJECTS:objects>)
 
 enable_testing()
 add_test(NAME simple COMMAND unittests)
