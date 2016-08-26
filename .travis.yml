@@ -1,5 +1,5 @@
 language: c
-script: CC=/usr/bin/c99 cmake . && make && make test
+script: CC=/usr/bin/c99 cmake . && make && make test CTEST_OUTPUT_ON_FAILURE=1
 addons:
     apt:
         packages:
