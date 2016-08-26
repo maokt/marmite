@@ -18,7 +18,7 @@ static void default_config(void) {
     MarmiteConfig *cfg = run_opts(1, "marmite");
     g_assert_nonnull(cfg);
     g_assert_true(g_str_has_suffix(cfg->command[0], "sh"));
-    g_assert_cmpstr(cfg->font, ==, "M+ 1mn regular,VL Gothic,Noto Sans Mono CJK JP 16");
+    g_assert_cmpstr(cfg->font, ==, "M+ 1mn regular,VL Gothic,Noto Sans Mono CJK JP,Ubuntu Mono,DejaVu Sans Mono,Monospace 16");
     g_assert_cmpstr(cfg->title, ==, "Marmite");
     g_assert_cmpint(cfg->scrollback, ==, 200);
     g_assert_cmpint(cfg->colour_mode, ==, 0);
