@@ -21,6 +21,7 @@ static void default_config(void) {
     g_assert_cmpstr(cfg->font, ==, "M+ 1mn regular,VL Gothic,Noto Sans Mono CJK JP 16");
     g_assert_cmpstr(cfg->title, ==, "Marmite");
     g_assert_cmpint(cfg->scrollback, ==, 200);
+    g_assert_cmpint(cfg->colour_mode, ==, 0);
 }
 
 static void opt_title(void) {
@@ -43,6 +44,12 @@ static void opt_scrollback(void) {
     g_assert_cmpint(cfg->scrollback, ==, 123);
 }
 
+static void opt_light(void) {
+    MarmiteConfig *cfg = run_opts(2, "marmite", "-l");
+    g_assert_nonnull(cfg);
+    g_assert_cmpint(cfg->colour_mode, ==, 1);
+}
+
 static void opt_command(void) {
     char *argv[] = { "marmite", "foo", "-e", "bar", NULL };
     MarmiteConfig *cfg = marmite_config(4, argv, NULL);
@@ -63,6 +70,7 @@ int main (int argc, char *argv[]) {
     g_test_add_func("/marmite/config/command", opt_command);
     g_test_add_func("/marmite/config/title", opt_title);
     g_test_add_func("/marmite/config/scrollback", opt_scrollback);
+    g_test_add_func("/marmite/config/light", opt_light);
     return g_test_run ();
 }
 

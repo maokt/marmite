@@ -35,11 +35,15 @@ GObject *marmite_vte(MarmiteConfig *cfg, MarmiteHooks *hooks) {
     }
 
 #if VTE_CHECK_VERSION(0,37,0)
-    vte_terminal_set_colors(vte, &solarized_palette[solarized_mode[0].fg], &solarized_palette[solarized_mode[0].bg], solarized_palette, solarized_palette_size);
+    vte_terminal_set_colors(vte,
+            &solarized_palette[solarized_mode[cfg->colour_mode].fg], &solarized_palette[solarized_mode[cfg->colour_mode].bg],
+            solarized_palette, solarized_palette_size);
     vte_terminal_spawn_sync(vte, VTE_PTY_DEFAULT, NULL, cfg->command,
             NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL, NULL);
 #else
-    vte_terminal_set_colors_rgba(vte, &solarized_palette[solarized_palette_fg], &solarized_palette[solarized_palette_bg], solarized_palette, solarized_palette_size);
+    vte_terminal_set_colors_rgba(vte,
+            &solarized_palette[solarized_mode[cfg->colour_mode].fg], &solarized_palette[solarized_mode[cfg->colour_mode].bg],
+            solarized_palette, solarized_palette_size);
     vte_terminal_fork_command_full(vte, VTE_PTY_DEFAULT, NULL, cfg->command,
             NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL);
 #endif

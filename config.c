@@ -14,6 +14,7 @@ static GOptionEntry entries[] = {
 	{ "title", 't', 0, G_OPTION_ARG_STRING, &cfg.title, "Set window title", "\"title\"" },
 	{ "font", 'f', 0, G_OPTION_ARG_STRING, &cfg.font, "Select terminal font", "\"font name\"" },
 	{ "scrollback", 's', 0, G_OPTION_ARG_INT, &cfg.scrollback, "Size of scrollback buffer", "\"lines\"" },
+	{ "light", 'l', 0, G_OPTION_ARG_NONE, &cfg.colour_mode, "Enable light colour mode", NULL },
 	{ G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, &cfg.command, "command to run", "[command]" },
 	{ NULL }
 };
@@ -43,6 +44,7 @@ MarmiteConfig *marmite_config(int argc, char *argv[], GOptionGroup *extra_option
     cfg.font = "M+ 1mn regular,VL Gothic,Noto Sans Mono CJK JP 16";
     cfg.command = NULL;
     cfg.scrollback = 0;
+    cfg.colour_mode = 0;
 
     GOptionContext *context = g_option_context_new("- Mini Terminal Emulator");
     g_option_context_set_summary(context, "Version 0.1;");
