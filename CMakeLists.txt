@@ -37,3 +37,5 @@ add_executable(unittests unittests.c $<TARGET_OBJECTS:objects>)
 
 enable_testing()
 add_test(NAME simple COMMAND unittests)
+
+install(TARGETS marmite DESTINATION bin)
