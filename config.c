@@ -40,7 +40,7 @@ static char **get_default_command() {
 MarmiteConfig *marmite_config(int argc, char *argv[], GOptionGroup *extra_options) {
     // set defaults
     cfg.title = "Marmite";
-    cfg.font = "VL Gothic 16";
+    cfg.font = "M+ 1mn regular,VL Gothic,Noto Sans Mono CJK JP 16";
     cfg.command = NULL;
     cfg.scrollback = 0;
 
