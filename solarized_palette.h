@@ -1,5 +1,17 @@
+/*
+ * The Solarized colour palette defined as an array of 16 GdbRGKA stuctures.
+ * The elements are in the order suitable for use in a 16 colour terminal.
+ * For the dark mode [0], indexes for foreground and background are 12 and 8.
+ * For the light mode [1], indexes for foreground and background are 11 and 15.
+ *
+ * The Solarized colour palette was created by Ethan Schoonover,
+ * http://ethanschoonover.com/solarized
+ *
+ */
+
 #ifndef _solarized_palette
 #define _solarized_palette 1
+#include <gdk/gdk.h>
 static const GdkRGBA solarized_palette[16] = {
     { 0.02745098039215686, 0.21176470588235294, 0.25882352941176473, 1.00 },
     { 0.86274509803921573, 0.19607843137254902, 0.18431372549019609, 1.00 },
@@ -18,7 +30,6 @@ static const GdkRGBA solarized_palette[16] = {
     { 0.57647058823529407, 0.63137254901960782, 0.63137254901960782, 1.00 },
     { 0.99215686274509807, 0.96470588235294119, 0.89019607843137250, 1.00 },
 };
-static const size_t solarized_palette_size = 16;
-static const int solarized_palette_fg = 12;
-static const int solarized_palette_bg = 8;
+static const int solarized_palette_size = 16;
+static struct { int fg; int bg; } solarized_mode[] = { { 12, 8 }, { 11, 15 } };
 #endif
