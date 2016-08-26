@@ -4,6 +4,11 @@ project(marmite C)
 set_property(GLOBAL PROPERTY CMAKE_C_STANDARD 99)
 set_property(GLOBAL PROPERTY CMAKE_C_STANDARD_REQUIRED ON)
 
+if( NOT CMAKE_BUILD_TYPE )
+    set( CMAKE_BUILD_TYPE Release CACHE STRING
+        "Select a Debug, Release, or RelWithDebInfo build." FORCE )
+endif()
+
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GLIB2 REQUIRED glib-2.0)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
