@@ -13,5 +13,13 @@
 *.so.*
 
 # Executables
-make-palette
 marmite
+unittests
+
+# Cmake
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+*.cmake
+Makefile
+install_manifest.txt
