@@ -1,14 +1,18 @@
 marmite
 =======
 
+[![Travis status](https://api.travis-ci.org/maokt/marmite.svg)](https://travis-ci.org/maokt/marmite)
+
 A simple terminal emulator using libvte. You either love it or hate it.
 
-Now using the Solarized colour palette: http://ethanschoonover.com/solarized
+Using the [Solarized colour palette](http://ethanschoonover.com/solarized) in dark or light mode.
 
-marmite-app
-===========
+Usage:
+    marmite [OPTION...] [command]
 
-This is the "application" version of marmite. Please don't use it yet.
+Options:
+    -t, --title="title"          Set window title
+    -f, --font="font name"       Select terminal font
+    -s, --scrollback="lines"     Size of scrollback buffer
+    -l, --light                  Enable light colour mode
 
-I don't know why I'd want the application instead of the regular program;
-this was my incomplete attempt to find out.
