@@ -18,6 +18,12 @@ static void got_title_changed(VteTerminal *vte, MarmiteHooks *hooks) {
         hooks->set_title(hooks->data, vte_terminal_get_window_title(vte));
 }
 
+static void scale_font(VteTerminal *vte, gdouble *increment) {
+    gdouble scale = vte_terminal_get_font_scale(vte);
+    scale += *increment;
+    if (scale >= 0.25 && scale <= 4.0)
+        vte_terminal_set_font_scale(vte, scale);
+}
 
 GObject *marmite_vte(MarmiteConfig *cfg, MarmiteHooks *hooks) {
     VteTerminal *vte = VTE_TERMINAL(vte_terminal_new());
@@ -33,6 +39,10 @@ GObject *marmite_vte(MarmiteConfig *cfg, MarmiteHooks *hooks) {
         g_signal_connect(G_OBJECT(vte), "child-exited", G_CALLBACK(got_child_exited), hooks);
         g_signal_connect(G_OBJECT(vte), "window-title-changed", G_CALLBACK(got_title_changed), hooks);
     }
+
+    static const gdouble increase = 0.25, decrease = -0.25;
+    g_signal_connect(G_OBJECT(vte), "increase-font-size", G_CALLBACK(scale_font), (gpointer)&increase);
+    g_signal_connect(G_OBJECT(vte), "decrease-font-size", G_CALLBACK(scale_font), (gpointer)&decrease);
 
 #if VTE_CHECK_VERSION(0,37,0)
     vte_terminal_set_colors(vte,
