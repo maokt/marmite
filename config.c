@@ -41,7 +41,7 @@ static char **get_default_command() {
 MarmiteConfig *marmite_config(int argc, char *argv[], GOptionGroup *extra_options) {
     // set defaults
     cfg.title = "Marmite";
-    cfg.font = "M+ 1mn regular,VL Gothic,Noto Sans Mono CJK JP,Ubuntu Mono,DejaVu Sans Mono,Monospace 16";
+    cfg.font = "M+ 1mn,VL Gothic,Noto Sans Mono CJK JP,Ubuntu Mono,DejaVu Sans Mono,Monospace 16";
     cfg.command = NULL;
     cfg.scrollback = 0;
     cfg.colour_mode = 0;
