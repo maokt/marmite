@@ -1,5 +1,6 @@
 language: c
-script: CC=/usr/bin/c99 cmake . && make && make test CTEST_OUTPUT_ON_FAILURE=1
+compiler: clang
+script: cmake . && make && make test CTEST_OUTPUT_ON_FAILURE=1
 addons:
     apt:
         packages:
